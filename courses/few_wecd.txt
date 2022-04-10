@@ -1,2 +1,0 @@
-Juho,Martti,OOP,juho
-juho,martti,3

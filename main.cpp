@@ -15,6 +15,7 @@ using namespace std;
 using filesystem::current_path;
 using filesystem::exists;
 
+//Adds given object to the given file.
 void addObjToFile(string obj, string fileName) {
     fstream fileOut;
     fileOut.open(fileName, ios_base::app);
@@ -22,6 +23,7 @@ void addObjToFile(string obj, string fileName) {
     fileOut.close();
 }
 
+//Gets all courses from the file and put them into the map.
 map<int, string> getCourses(string fileName) {
     fstream fileIn;
     map<int, string> courses;
@@ -33,10 +35,12 @@ map<int, string> getCourses(string fileName) {
         courses.insert({ num, line });
         ++num;
     }
+    cout << endl;
     fileIn.close();
     return courses;
 }
 
+//Gets all teachers from the file and put them into the vector.
 vector<Teacher> getTechers(string fileName) {
     fstream fileIn;
     vector<string> information;
@@ -64,6 +68,7 @@ vector<Teacher> getTechers(string fileName) {
 
 }
 
+//Checks if the given username and password are found in the file and returns the teacher object.
 Teacher login() {
     vector<Teacher>teachers = getTechers("teachers.txt");
     while (true) {
@@ -86,6 +91,7 @@ Teacher login() {
     }
 }
 
+//Changes every space of string to underscore.
 string spaceToUnderscore(string text) {
     for (std::string::iterator it = text.begin(); it != text.end(); ++it) {
         if (*it == ' ') {
@@ -95,8 +101,8 @@ string spaceToUnderscore(string text) {
     return text;
 }
 
+//Checking if the given input is an integer.
 int checkInput() {
-    // Checking if the given input is a number.
     int answer;
     while (!(cin >> answer)) {
         cin.clear();
@@ -106,6 +112,8 @@ int checkInput() {
     return answer;
 }
 
+//Creates a file with the given course name and adds teachers' information to the file
+//and adds course name to the corses.txt file.
 void createCourse(Teacher& teacher) {
     string courseName;
     stringstream fileName;
@@ -122,6 +130,7 @@ void createCourse(Teacher& teacher) {
     }
 }
 
+//Deletes course file and course name from courses.txt file.
 void deleteCorse() {
     map<int, string> courses = getCourses("Courses.txt");
     stringstream fileName;
@@ -130,6 +139,7 @@ void deleteCorse() {
     ofstream temp;
     temp.open("temp.txt");
     string line;
+    cout << "Give the course a number that you want to delete." << endl;
     int deleteLine = checkInput();
     auto it = courses.find(deleteLine);
     if (it != courses.end()) {
@@ -152,13 +162,14 @@ void deleteCorse() {
     }
 }
 
+//Creates teacher's view.
 int teacherView(Teacher teacher) {
     cout << "Hello " << teacher.getFName() << " " << teacher.getLName() << endl;
     int answer;
     while (true) {
         cout << "Create new course: 1" << endl;
         cout << "Show all courses: 2" << endl;
-        cout << "Delete corse: 3" << endl;
+        cout << "Delete course: 3" << endl;
         cout << "Back to main menu: 4" << endl;
 
         answer = checkInput();
@@ -188,10 +199,12 @@ int teacherView(Teacher teacher) {
     }
 }
 
-bool checkStudent(string corse, Student student) {
+//Check if the student is signed up for the course already by checking
+//if the student's number is already in the file.
+bool checkStudent(string course, Student student) {
     fstream students;
     vector<string> information;
-    students.open(corse, ios_base::in);
+    students.open(course, ios_base::in);
     string line;
     while (getline(students, line)) {
         string w = "";
@@ -224,19 +237,21 @@ bool checkStudent(string corse, Student student) {
         
 }
 
+//Adds student's information to chosen course's file.
 void corseSignUp(string corseName, Student student) {
-    stringstream  corse;
-    corse << current_path().string() << "\\courses\\" << spaceToUnderscore(corseName) << ".txt";
+    stringstream  course;
+    course << current_path().string() << "\\courses\\" << spaceToUnderscore(corseName) << ".txt";
     cout << "You are sing up for " << corseName << "." << endl;
-    if (checkStudent(corse.str(), student)) {
+    if (checkStudent(course.str(), student)) {
         cout << "You are already sign up." << endl;
     }
     else {
-        addObjToFile(student.getStudentInformation(), corse.str());
+        addObjToFile(student.getStudentInformation(), course.str());
     }
 }
 
-void studentView() {
+//Creates student's view.
+int studentView() {
     string fname, lname;
     int studentNum;
     cout << "Please give your information." << endl;
@@ -246,19 +261,25 @@ void studentView() {
     Student student = Student(fname, lname, studentNum);
     cout << "Here are all the available courses." << endl;
     map<int, string> courses = getCourses("courses.txt");
-    cout << "What course do you want to sign up for?" << endl;
-    cout << "Give the coursea number: ";
-    int answer = checkInput();
-    map<int, string>::iterator itr;
-    for (itr = courses.begin(); itr != courses.end(); ++itr) {
-        if (answer == itr->first) {
-            corseSignUp(itr->second, student);
+    while (true) {
+        cout << "What course do you want to sign up for?" << endl;
+        cout << "Give the course number or 0 to go back to main menu." << endl;
+        int answer = checkInput();
+        map<int, string>::iterator itr;
+        for (itr = courses.begin(); itr != courses.end(); ++itr) {
+            if (answer == itr->first) {
+                corseSignUp(itr->second, student);
+            }
+            else if (answer == 0) {
+                return 0;
+            }
         }
     }
 }
 
-
+//Main menu.
 int main() {
+    setlocale(LC_ALL, "fi_FI.UTF-8");
     int answer;
     cout << "Current working directory: " << current_path() << endl;
     while (true) {

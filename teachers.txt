@@ -1,3 +1,2 @@
-Juho,Martti,juho,test
-Juho,Martti,juho1,test
-Juho,Martti,juho2,koira
+Maija,Meikäläinen,teacher1,test
+Esko,Esimerkki,opettaja2,salasana123
