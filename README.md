@@ -37,4 +37,6 @@ Kurssia poistaessa valitse kurssin numero, jonka haluat poistaa.
 ![image](https://user-images.githubusercontent.com/79226961/162616248-01ab26cc-cc5e-43b0-b775-f14aca62e0d0.png)
 
 Kurssille liittyessä anneetaan ensin omat tiedot ja sen jälkeen valitsemalla kurssi.<br>
-Samalle kurssille ei saa liityttyä kahta kertaa tai samalla opiskelijanumerolla.
+Samalle kurssille ei saa liityttyä kahta kertaa tai samalla opiskelijanumerolla.<br><br>
+
+Jos tulee jotain kysyttävää, niin minuun saa yhteyttä juho.martti@edu.turkuamk.fi.
